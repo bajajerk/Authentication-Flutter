@@ -1,4 +1,7 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:validate/validate.dart';
 
 void main() => runApp(new MaterialApp(
   title: 'Forms in Flutter',
@@ -16,7 +19,44 @@ class _LoginData{
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  _LoginData _data = new _LoginData();
+
+  String _validateEmail(String value) {
+    // If empty value, the isEmail function throw a error.
+    // So I changed this function with try and catch.
+    try {
+      Validate.isEmail(value);
+    } catch (e) {
+      return 'The E-mail Address must be a valid email address.';
+    }
+
+    return null;
+  }
+
+  String _validatePassword(String value) {
+    if (value.length < 8) {
+      return 'The Password must be at least 8 characters.';
+    }
+
+    return null;
+  }
+
+
+  void submit() {
+    // First validate form.
+    if (this._formKey.currentState.validate()) {
+      _formKey.currentState.save(); // Save our form now.
+
+      print('Printing the login data.');
+      print('Email: ${_data.email}');
+      print('Password: ${_data.password}');
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -37,6 +77,10 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'mayank@bajaj.com',
                   labelText: 'E-mail address'
                 ),
+                validator: this._validateEmail,
+                onSaved: (String value){
+                  this._data.email = value;
+                }
               ),
               new TextFormField(
                 obscureText: true,
@@ -44,6 +88,10 @@ class _LoginPageState extends State<LoginPage> {
                   labelText: 'Enter your pass',
                   hintText: 'Password'
                 ),
+                validator: this._validatePassword,
+                onSaved: (String value){
+                  this._data.password = value;
+                },
               ),
               new Container(
                 width: screenSize.width,
@@ -54,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white
                     ),
                   ),
-                  onPressed: ()=> null,
+                  onPressed: ()=> this.submit(),
                   color: Colors.blue,
                 ),
                 margin: new EdgeInsets.only(

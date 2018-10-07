@@ -21,6 +21,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   flutter_localstorage:
     git: git://github.com/lakexyde/flutter_localstorage.git
+  validate: ^1.7.0
 
 dev_dependencies:
   flutter_test:
