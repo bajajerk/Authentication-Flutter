@@ -3,6 +3,8 @@ import 'package:flutter_localstorage/flutter_localstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:validate/validate.dart';
 import 'home_page.dart';
+import 'email_store.dart';
+
 
 LocalStorage localStorage = new LocalStorage();
 
@@ -55,6 +57,9 @@ class _LoginPageState extends State<LoginPage> {
       print("Abey bc email me hai ye dekel");
       print(localStorage.getItem("email"));
       String temp = localStorage.getItem("email");
+
+      EmailStorage myStorage = new EmailStorage();
+      myStorage.writeEmail(_data.email);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Home()),
